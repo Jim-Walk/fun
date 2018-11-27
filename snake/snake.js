@@ -19,8 +19,8 @@ function Snake(){
     }
 
     this.dir = function(x, y){
-        this.xspeed = x*scl;
-        this.yspeed = y*scl;
+        this.xspeed = x;
+        this.yspeed = y;
     }
 
     this.death = function(){
@@ -36,17 +36,15 @@ function Snake(){
 
 
     this.update = function(){
-        if (this.total === this.tail.length){
-            for (var i = 0; i < this.tail.length-1; i++){
+        for (var i = 0; i < this.tail.length-1; i++){
                 this.tail[i] = this.tail[i+1];
-            }
-
         }
-        this.tail[this.total-1] = createVector(this.x, this.y);
+        if (this.total >= 1){
+            this.tail[this.total-1] = createVector(this.x, this.y);
+        }
 
-
-        this.x = this.x + this.xspeed;
-        this.y = this.y + this.yspeed;
+        this.x = this.x + this.xspeed * scl;
+        this.y = this.y + this.yspeed * scl;
 
         this.x = constrain(this.x, 0, width-scl);
         this.y = constrain(this.y, 0, height-scl);
