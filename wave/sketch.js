@@ -1,7 +1,7 @@
 let angle = 0;
 let ma; // magic angle to make things look nice
 let maxD;
-let mat = 0;
+let mat = 255;
 
 function setup(){
     createCanvas(400,400, WEBGL);
@@ -13,11 +13,13 @@ function setup(){
 function draw(){
     background(100);
 
+    // view
     ortho(-400, 400, 400, -400, 0, 1000);
-    directionalLight(204, 255, 255, 1, -1, 0);
-
     rotateX(ma);
     rotateY(-PI/4);
+
+    // lighting
+    directionalLight(204, 255, 255, 1, -1, 0);
 
     let w = 24;
     let offset = 0;
@@ -29,16 +31,14 @@ function draw(){
             let offset = map(d, 0, maxD, -2, 2)
             let a = angle + offset;
             let h = floor(map(sin(a), -1, 1, 75, 350));
-            //normalMaterial();
             ambientMaterial(mat);
             translate(x - width/2, 0, z-height/2 );
 	         box(w, h, w);
 
             fill(255);
-            //rect(x-width/2 + w/2,0,w-2,h);
             pop();
         }
     }
     angle -= 0.1;
-    mat += 1
+//    mat += 1
 }
