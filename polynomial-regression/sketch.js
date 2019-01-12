@@ -3,16 +3,17 @@
 let x_vals = [];
 let y_vals = [];
 
-let a, b, c;
+let a, b, c, d;
 
 const learningRate = 0.02;
-const optimiser = tf.train.sgd(learningRate);
+const optimiser = tf.train.adam(learningRate);
 
 function setup(){
    createCanvas(400,400);
    a = tf.variable(tf.scalar(random(-1, 1)));
    b = tf.variable(tf.scalar(random(-1, 1)));
    c = tf.variable(tf.scalar(random(-1, 1)));
+   d = tf.variable(tf.scalar(random(-1, 1)));
 }
 
 // preds are predicted y values, labes are actual y vals
@@ -24,8 +25,11 @@ function loss(preds, labels){
 // take an x val, return corresponding y val as tensor
 function predict(x){
     const xs = tf.tensor1d(x);
-    // y = ax^2 + bx + c
-    const ys = xs.square().mul(a).add(xs.mul(b)).add(c);
+    // y = ax^3 + bx^2 + cx + d
+    const ys = xs.pow(tf.scalar(3)).mul(a)
+      .add(xs.square().mul(b))
+      .add(xs.mul(c))
+      .add(d);
 
     return ys;
 }
@@ -41,8 +45,7 @@ function mousePressed(){
 }
 
 function draw(){
-    
-    // first train
+   // first train
    tf.tidy(() => {
       if (x_vals.length > 0){
            const ys = tf.tensor1d(y_vals);
@@ -50,6 +53,14 @@ function draw(){
       }
    });
    background(0);
+   var str = "y=(";
+   var a_num = parseFloat(a.dataSync()).toFixed(2);
+   var b_num = parseFloat(b.dataSync()).toFixed(2);
+   var c_num = parseFloat(c.dataSync()).toFixed(2);
+   var d_num = parseFloat(d.dataSync()).toFixed(2);
+   var res = str.concat(a_num, "^3 * x)+(",b_num,"^2 * x)+(",c_num," * x)+",d_num);
+   noStroke(); fill(255); textSize(10);
+   text(res, 5, 15); 
    strokeWeight(4);
    stroke(255);
    // draw our points, scale back up from unit square
@@ -58,16 +69,20 @@ function draw(){
         let py = map(y_vals[i], -1, 1, height, 0);
         point(px,py);
    }
-   // draw line between 0 and 1
-   // First get points
+
+   // Draw curve between 0 and 1.01 (hack to get drawing to edge
+   // of canvas.
+   // First get points x co ord
    const curveX = [];
-   for (let x = -1; x < 1; x += 0.05){
+   for (let x = -1; x < 1.01; x += 0.05){
         curveX.push(x);   
    }
+   // predict y points, using tf.tidy to memory manage
    const ys = tf.tidy(() => predict(curveX)); 
    let curveY = ys.dataSync();
    ys.dispose();
 
+   // actually draw it
    beginShape();
    noFill();
    stroke(255);
