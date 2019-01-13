@@ -5,7 +5,7 @@ let y_vals = [];
 
 let a, b, c, d;
 
-const learningRate = 0.02;
+const learningRate = 0.01;
 const optimiser = tf.train.adam(learningRate);
 
 function setup(){
@@ -22,7 +22,8 @@ function loss(preds, labels){
 }
 
 
-// take an x val, return corresponding y val as tensor
+// take an x val, return corresponding 
+// y val as tensor
 function predict(x){
     const xs = tf.tensor1d(x);
     // y = ax^3 + bx^2 + cx + d
