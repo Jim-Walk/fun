@@ -1,0 +1,14 @@
+{
+  "name": "smart-rockets",
+  "version": "1.0.0",
+  "description": "Following along from https://www.youtube.com/watch?v=H81Tdrmz2LA",
+  "main": "sketch.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.31.0"
+  }
+}
