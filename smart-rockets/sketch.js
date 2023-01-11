@@ -1,6 +1,6 @@
 var population
 var count = 0  // tracks how long the rocket has lived
-var lifespan = 150
+var lifespan = 200
 var lifeP
 var target
 var g_iterations = 0
